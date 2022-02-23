@@ -1,0 +1,38 @@
+{% extends 'recipes/base.html' %}
+
+
+
+{% block content %}
+<div class="card-container card-list-container">
+    <div class="card">
+        <div>
+            <img src="{{recipe.cover.url}}" alt="">
+        </div>
+        <div class="card-title">
+            <h2>{{recipe.title}}</h2>
+        </div>
+        <div class="card-meta-info">
+            <span><i class="fas fa-user"></i> {{recipe.author.first_name }}
+            <span><i class="far fa-calendar-alt"></i> {{recipe.created_at|date:"d/m/Y"}}</span>
+            <a href=""><span><i class="fas fa-pizza-slice"></i> <strong>{{recipe.category.name}}</strong></span></a>
+        </div>
+        <div class="card-desc">{{recipe.description}}</div>
+        <div class="card-info">
+            <div class="card-info-item">
+                <strong>Servings</strong>
+                <p>{{recipe.servings}} {{recipe.servings_unit}}</p>
+            </div>
+            <div class="card-info-item">
+                <strong>Prepare time</strong>
+                <p>{{recipe.preparation_time}} {{recipe.preparation_time_unit}}</p>
+            </div>
+        </div>
+        <div class="card-detail">
+            <a href="">
+                <h3>See more...</h3>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
