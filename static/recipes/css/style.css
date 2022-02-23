@@ -1,0 +1,37 @@
+body{
+    background-color: gray;
+    margin: 0px;
+    padding:0px;
+}
+nav{
+    display: flex;
+    background-color: black;
+    color: white;
+}
+h1{
+    font-size: 40px;
+    line-height: 0px  ;
+}
+
+ul{
+    margin:0px auto;
+}
+
+form{
+    margin:20px auto;
+}
+
+input[type="text"] {
+    padding: 8px;
+    width: 40vw;
+    border-radius: 6px;
+    border-style: none;
+}
+input[type="submit"]{
+    padding: 6px;
+    background-color: black;
+    color: white;
+}
+.form-container{
+    display: flex;
+}
