@@ -1,4 +1,4 @@
-from os import path
+import os
 
 """
 Django settings for core project.
@@ -123,8 +123,9 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-STATICFILES_DIRS = [BASE_DIR / "static", path.join(BASE_DIR, "static")]
+STATICFILES_DIRS = [BASE_DIR / "static", os.path.join(BASE_DIR, "static")]
 
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

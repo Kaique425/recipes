@@ -3,9 +3,9 @@
 {% block content %}
 <div class="card-container card-list-container">
     {% for recipe in recipes %}
-    <div class="card">
+    <div class="card card-list">
         <div>
-            <img src="{{recipe.cover.url}}" alt="">
+            <a href="{% url 'recipe:recipe' 1 %}"><img src="{{recipe.cover.url}}" alt=""></a>
         </div>
         <div class="card-title">
             <h2>{{recipe.title}}</h2>
@@ -26,8 +26,8 @@
                 <p>{{recipe.preparation_time}} {{recipe.preparation_time_unit}}</p>
             </div>
         </div>
-        <div class="card-detail">
-            <a href="">
+        <div class="card-see-more">
+            <a href="{% url 'recipe:recipe' 1 %}">
                 <h3>See more...</h3>
             </a>
         </div>

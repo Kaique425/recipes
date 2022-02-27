@@ -67,14 +67,19 @@ img{
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
+    height: fit-content;
     background-color: white;
-    height: 35rem;
-    width: 360px;
     transform: scale(1);
     transition: all 150ms ease-in-out;
     box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.2)
 }
-.card:hover{
+.card-list{
+    width: 360px;
+}
+.card-detail{
+    width: 60vw;
+}
+.card-list:hover{
     transform: scale(1.03)
 }
 
@@ -83,6 +88,11 @@ img{
     justify-items:center;
 }
 .card-list-container{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 50px;
+}
+.card-detail-container{
     display:grid;
     grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
     gap: 50px;
@@ -103,6 +113,9 @@ img{
 .card-meta-info span{
     padding: 5px;
 }
+.card-detail .card-meta-info span{
+    padding: 5px 25px;
+}
 .card-desc{
     padding: 0px 20px;
     text-align: start;
@@ -116,7 +129,7 @@ img{
 .card-info-item{
     line-height:5px;
 }
-.card-detail h3{
+.card-see-more h3{
     background-color: black;
     color: white;
     width: 100%;
@@ -124,8 +137,11 @@ img{
     margin: 0px;
     padding: 10px 0px;
 }
-.card-detail h3:hover{
+.card-see-more h3:hover{
     background-color: rgba(0, 0, 0, 0.9);
+}
+.preparation-steps{
+    padding: 0px 25px 25px 25px;
 }
 footer{
     display:flex;

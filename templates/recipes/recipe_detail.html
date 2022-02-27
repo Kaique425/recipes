@@ -3,8 +3,8 @@
 
 
 {% block content %}
-<div class="card-container card-list-container">
-    <div class="card">
+<div class="card-container card-detail-container">
+    <div class="card card-detail">
         <div>
             <img src="{{recipe.cover.url}}" alt="">
         </div>
@@ -27,11 +27,18 @@
                 <p>{{recipe.preparation_time}} {{recipe.preparation_time_unit}}</p>
             </div>
         </div>
-        <div class="card-detail">
-            <a href="">
-                <h3>See more...</h3>
-            </a>
-        </div>
+        {% if is_detail_page is not True %}
+            <div class="card-see-more">
+                <a href="">
+                    <h3>See more...</h3>
+                </a>
+            </div>
+        {% endif %}
+        {% if is_detail_page is True %}
+            <div class="preparation-steps">
+                <div>{{recipe.preparation_steps| linebreaksbr}}</div>
+            </div>
+        {% endif %}
     </div>
 </div>
 
