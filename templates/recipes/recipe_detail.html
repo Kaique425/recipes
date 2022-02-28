@@ -1,6 +1,6 @@
 {% extends 'recipes/base.html' %}
 
-
+{% block Title %}{{title}}{% endblock Title %}
 
 {% block content %}
 <div class="card-container card-detail-container">
@@ -12,7 +12,12 @@
             <h2>{{recipe.title}}</h2>
         </div>
         <div class="card-meta-info">
-            <span><i class="fas fa-user"></i> {{recipe.author.first_name }}
+            {% if recipe.author.first_name %}
+                <span><i class="fas fa-user"></i> {{recipe.author.username }}
+            {% else %}
+                <span><i class="fas fa-user"></i> {{recipe.author.username }}
+            {% endif %}
+            
             <span><i class="far fa-calendar-alt"></i> {{recipe.created_at|date:"d/m/Y"}}</span>
             <a href=""><span><i class="fas fa-pizza-slice"></i> <strong>{{recipe.category.name}}</strong></span></a>
         </div>

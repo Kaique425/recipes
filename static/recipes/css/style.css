@@ -11,6 +11,10 @@ nav{
     background-color: black;
     color: white;
 }
+nav a{
+    color: rgb(255, 255, 255);
+    text-decoration:none;
+}
 h1{
     font-size: 40px;
     line-height: 0px  ;
@@ -142,6 +146,12 @@ img{
 }
 .preparation-steps{
     padding: 0px 25px 25px 25px;
+}
+.empty-card-info{
+    text-align:center;
+    padding: 100px;
+    width:100vw;
+    height:100vh;
 }
 footer{
     display:flex;
