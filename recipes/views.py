@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404, render
 
-from .fake_recipes import make_recipe
 from .models import Recipe
 
 
