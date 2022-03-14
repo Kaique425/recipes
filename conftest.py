@@ -8,6 +8,6 @@ def media_storage(settings, tmpdir):
     settings.MEDIA_ROOT = tmpdir.strpath
 
 
-@pytest.fixture
+@pytest.fixture()
 def recipe():
     return RecipeFactory()

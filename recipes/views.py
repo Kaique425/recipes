@@ -1,3 +1,6 @@
+from urllib import request
+
+from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 
 from .models import Recipe
@@ -22,3 +25,11 @@ def recipe(request, id):
     title = f"Recipe: {recipe.title}"
     context = {"recipe": recipe, "is_detail_page": True, "title": title}
     return render(request, "recipes/recipe_detail.html", context)
+
+
+def search(request: request):
+    search = request.GET.get("search", "").strip()
+    if not search:
+        raise Http404()
+    context = {"search": search}
+    return render(request, "recipes/search.html", context)
