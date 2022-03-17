@@ -1,5 +1,6 @@
 from urllib import request
 
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 
@@ -31,5 +32,11 @@ def search(request: request):
     search = request.GET.get("search", "").strip()
     if not search:
         raise Http404()
-    context = {"search": search}
+    recipes = Recipe.objects.filter(
+        Q(
+            Q(title__icontains=search) | Q(description__icontains=search),
+            is_published=True,
+        )
+    ).order_by("-id")
+    context = {"search": search, "recipes": recipes}
     return render(request, "recipes/search.html", context)

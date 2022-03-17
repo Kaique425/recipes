@@ -1,0 +1,37 @@
+<div class="card-container card-list-container">
+    {% for recipe in recipes %}
+            <div class="card card-list">
+                <div>
+                    <a href="{% url 'recipe:recipe' recipe.id %}"><img src="{{recipe.cover.url}}" alt=""></a>
+                </div>
+                <div class="card-title">
+                    <h2>{{recipe.title}}</h2>
+                </div>
+                <div class="card-meta-info">
+                    <span><i class="fas fa-user"></i> {{recipe.author.username}}
+                    <span><i class="far fa-calendar-alt"></i> {{recipe.created_at|date:"d/m/Y"}}</span>
+                    <a href="{% url 'recipe:category' recipe.category.id %}"><span><i class="fas fa-pizza-slice"></i> <strong>{{recipe.category.name}}</strong></span></a>
+                </div>
+                <div class="card-desc">{{recipe.description}}</div>
+                <div class="card-info">
+                    <div class="card-info-item">
+                        <strong>Servings</strong>
+                        <p>{{recipe.servings}} {{recipe.servings_unit}}</p>
+                    </div>
+                    <div class="card-info-item">
+                        <strong>Prepare time</strong>
+                        <p>{{recipe.preparation_time}} {{recipe.preparation_time_unit}}</p>
+                    </div>
+                </div>
+                <div class="card-see-more">
+                    <a href="{% url 'recipe:recipe' recipe.id %}">
+                        <h3>See more...</h3>
+                    </a>
+                </div>
+            </div>
+    {% empty %}
+        <div class="empty-card-info">
+            <h1>Não há receitas pra serem exibidas.</h1>
+        </div>
+    {% endfor %}
+</div>
