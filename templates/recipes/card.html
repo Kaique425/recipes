@@ -28,10 +28,12 @@
                         <h3>See more...</h3>
                     </a>
                 </div>
+            </div>  
+            {% empty %}
+            <div class="empty-card-info">
+                <h1>Não há receitas pra serem exibidas.</h1>
             </div>
-    {% empty %}
-        <div class="empty-card-info">
-            <h1>Não há receitas pra serem exibidas.</h1>
+            {% endfor %}
         </div>
-    {% endfor %}
-</div>
+
+        

@@ -1,5 +1,7 @@
 import os
 
+from django.contrib.messages import constants
+
 """
 Django settings for core project.
 
@@ -25,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-=&o=sh13%tjrsvg&fpz5=#9dvu(iowek@iyl+=d%q0x=uu#!o%"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "livereload",
     "recipes",
+    "authors",
 ]
 
 MIDDLEWARE = [
@@ -81,8 +84,12 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": os.environ.get("DATABASE_ENGINE"),
+        "NAME": os.environ.get("DATABASE_NAME"),
+        "USER": os.environ.get("DATABASE_USER"),
+        "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
+        "HOST": os.environ.get("DATABASE_HOST"),
+        "PORT": os.environ.get("DATABASE_PORT"),
     }
 }
 
@@ -135,3 +142,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MEDIA_URL = "/midia/"
 
 MEDIA_ROOT = BASE_DIR / "media"
+
+MESSAGES_TAGS = {
+    constants.DEBUG: "debug-message",
+    constants.INFO: "info-message",
+    constants.SUCCESS: "success-message",
+    constants.ERROR: "error-message",
+    constants.WARNING: "warning-message",
+}

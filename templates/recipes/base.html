@@ -23,9 +23,35 @@
 
 <body>
     <main>
-        {% block content %}
-        
-        {% endblock content %}
+
+       {% include "recipes/message.html" %}
+
+
+            {% block content %}
+
+            {% endblock content %}
+       </div>
+       <div class="index_container">
+            {% if recipes.has_other_pages %}
+            {% if not recipes.has_previous %}
+                <a href="#" class="index browser disabled" >Previous</a>
+            {% else %}
+                <a href="{% url 'recipe:home' %}?page={{recipes.previous_page_number}}" class="index browser enabled" >Previous</a>                
+            {% endif %}
+            {% for num in recipes.paginator.page_range%}
+                {% if num == recipes.number %}
+                    <a href="{% url 'recipe:home' %}?page={{num}}" class="index number selected">{{num}}</a>
+                {% else %}
+                    <a href="{% url 'recipe:home' %}?page={{num}}" class="index number">{{num}}</a>
+                {% endif %}
+            {% endfor %}
+            {% if recipes.has_next %}
+                <a href="{% url 'recipe:home' %}?page={{recipes.next_page_number}}" class="index browser enabled"> Next </a>
+            {% else %}
+                <a href="#" class="index browser disabled">Next</a>
+            {% endif %}
+                {% endif %}
+        </div>
     </main>
     <footer>
         <span>Powered by Django</span>

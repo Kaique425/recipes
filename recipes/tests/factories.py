@@ -43,7 +43,7 @@ class RecipeFactory(factory.django.DjangoModelFactory):
     preparation_steps = factory.Faker(
         "paragraph", nb_sentences=5, variable_nb_sentences=True
     )
-    praparation_steps_is_html = factory.Faker("pybool")
+    praparation_steps_is_html = False
     created_at = faker.date()
     updated_at = faker.date()
     is_published = factory.Faker("pybool")

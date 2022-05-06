@@ -1,0 +1,36 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %} Register {% endblock title %} 
+
+{% block content %}
+ 
+<div class="container">
+    <div class="form-container">
+            <div><H1>Register</H1></div>
+            <div>
+                <form action="{% url 'author:create' %}" method="POST">
+                    {% csrf_token %}
+                        {% for field in form %}
+                            <div class="form-field">
+                                <label for="{{field.id_for_label}}">{{field.label}}</label>
+                                {{field}}
+                                {% if field.help_text %}
+                                <p class="help-text">{{field.help_text}}</p>
+                                {% endif %}
+                                {{field.errors}}
+                                </div>
+                            <div class="form-field">
+                        {% endfor %}
+                        {% for message in messages %}
+                                <p>{{message}}</p>
+                        {% endfor %}
+                    </div>
+                    <button action="submit" >Send</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+      </div>
+    
+
+{% endblock content %}

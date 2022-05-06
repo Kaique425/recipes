@@ -93,12 +93,12 @@ img{
 }
 .card-list-container{
     display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
     gap: 50px;
 }
 .card-detail-container{
     display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
     gap: 50px;
 }
 .card-title{
@@ -159,4 +159,96 @@ footer{
     background-color:black;
     padding:20px;
     color:white;
+}
+.index{
+    scale: 1;
+    border-radius: 4px;
+    margin: 10px 5px;
+    background-color:white;
+    box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.336);
+    transition: all 50ms ease-in-out;
+    transform:scale(1);
+}
+.index:hover{
+    transform:scale(1.1);
+}
+.number{
+    font-size: 15px;
+    padding: 15px;
+}
+.browser{
+    padding: 15px;
+    width: 10vw;
+}
+.selected{
+    color:white;
+    background-color: rgb(1, 124, 255);
+}
+.index_container{
+    margin: 30px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+.disabled{
+    background-color:rgb(219, 219, 219);
+    color:rgb(61, 61, 61);
+    pointer-events: none;
+}
+.enabled{
+    color: black;
+}
+
+.message{
+    margin:auto;
+    width:50vw;
+    border:solid;
+    display:flex;
+    flex-flow:column wrap;
+    justify-items:center;
+    align-items:center;
+    border-radius: 5px;
+    padding:10px;
+} 
+.success{
+    background-color:lightgreen;
+    border-color:green;
+    color: black;
+}
+.form-container{
+    max-width: 64rem;
+    margin: auto;
+}
+.form-field{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+    gap: 10px;
+    width: 100%;
+}
+label{
+    display:block;
+    font-size: 20px;
+}
+.form-field input{ 
+    border-radius: 3px;
+    padding: 5px;
+    border:none;
+}
+.form-field button{
+    border-radius: 3px;
+    padding: 5px;
+    border:none;
+    background-color: black;
+    color: white;
+    transition: all ease-in-out 100ms;
+}
+.form-field button:hover{
+    background-color: rgb(49, 49, 49);
+}
+.container{
+    display:flex;
+    margin: auto;
+}
+.errorlist{
+    color:red;
 }

@@ -1,23 +1,34 @@
+import os
 from urllib import request
 
+from django.contrib import messages
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 
 from .models import Recipe
+from .utils.pagination import make_pagination
+
+PER_PAGE = os.environ.get("PER_PAGE")
 
 
 def home(request):
+    recipes = Recipe.objects.filter(is_published=True)
     title = "Home"
-    recipe = Recipe.objects.filter(is_published=True)
-    context = {"recipes": recipe, "title": title}
+    recipes_paginator = make_pagination(request, recipes, PER_PAGE)
+    context = {"recipes": recipes_paginator, "title": title}
+
+    # messages.success(request, "Que legal, Foi com sucesso")
+
     return render(request, "recipes/recipe_list.html", context)
 
 
 def category(request, id):
-    recipe = Recipe.objects.filter(category__id=id)
-    title = f"{recipe.first().category.name}"
-    context = {"recipes": recipe, "title": title}
+    recipes = Recipe.objects.filter(category__id=id)
+    title = f"{recipes.first().category.name}"
+    recipes_paginator = make_pagination(request, recipes, PER_PAGE)
+    context = {"recipes": recipes_paginator, "title": title}
     return render(request, "recipes/recipe_list.html", context)
 
 
@@ -38,5 +49,6 @@ def search(request: request):
             is_published=True,
         )
     ).order_by("-id")
-    context = {"search": search, "recipes": recipes}
+    recipes_paginator = make_pagination(request, recipes, PER_PAGE)
+    context = {"search": search, "recipes": recipes_paginator}
     return render(request, "recipes/search.html", context)
