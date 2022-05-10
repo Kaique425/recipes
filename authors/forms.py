@@ -1,4 +1,5 @@
 import re
+from logging import PlaceHolder
 
 from attr import fields
 from django import forms
@@ -24,14 +25,25 @@ class RegisterForm(forms.ModelForm):
         self.fields["last_name"].widget.attrs["placeholder"] = "Ex Doe"
         self.fields["email"].widget.attrs["placeholder"] = "Type your e-mail"
 
+    username = forms.CharField(
+        label="Username",
+        help_text=(
+            "Username must have letters, numbers or one of those @.+-_.",
+            "The lengh should be between 4 and 150 characters.",
+        ),
+        error_messages={
+            "required": "This field is required",
+        },
+        min_length=4,
+        max_length=150,
+    )
+
     first_name = forms.CharField(
-        required=True,
         label="First name",
         error_messages={"required": "Type your first name."},
     )
 
     last_name = forms.CharField(
-        required=True,
         label="Last name",
         error_messages={"required": "Type your last name."},
     )
@@ -76,6 +88,7 @@ class RegisterForm(forms.ModelForm):
         }
         labels = {
             "email": "E-mail",
+            "placeholder": "Type your username",
         }
         widgets = {
             "username": forms.TextInput(

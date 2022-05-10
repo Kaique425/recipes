@@ -1,6 +1,6 @@
 from unicodedata import category
 
-from conftest import recipe
+# from conftest import recipe
 from django.test import TestCase
 from django.urls import resolve, reverse
 from recipes import views
@@ -32,4 +32,4 @@ class RecipeSearchTest(TestCase):
         search_url = reverse("recipe:search")
         response = self.client.get(f"{search_url}?search={recipe.title}")
 
-        self.assertIn(recipe.title, response.context["recipes"].first().title)
+        self.assertIn(recipe.title, response.context["recipes"].title)

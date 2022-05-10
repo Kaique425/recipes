@@ -43,7 +43,13 @@ class AuthorRegisterFormUnitTest(TestCase):
             ("first_name", "First name"),
             ("last_name", "Last name"),
             ("email", "E-mail"),
-            ("username", "Username"),
+            (
+                "username",
+                (
+                    "Username must have letters, numbers or one of those @.+-_."
+                    "The lengh should be between 4 and 150 characters."
+                ),
+            ),
             ("password", "Password"),
             ("password2", "Password Confirmation"),
         ]
@@ -81,3 +87,10 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
         url = reverse("author:create")
         response = self.client.post(url, data=self.form_data, follow=True)
         self.assertIn(message, response.context["form"].errors.get(field))
+
+    def test_username_field_min_length_should_be_4(self):
+        self.form_data["username"] = "Joao"
+        url = reverse("author:create")
+        message = "Teste Teste"
+        response = self.client.post(url, data=self.form_data, follow=True)
+        self.assertIn(message, response.context["form"].errors.get("username"))
