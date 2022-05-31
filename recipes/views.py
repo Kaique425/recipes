@@ -1,6 +1,7 @@
 import os
 from urllib import request
 
+from django.conf import settings
 from django.contrib import messages
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
@@ -10,7 +11,7 @@ from django.shortcuts import get_object_or_404, render
 from .models import Recipe
 from .utils.pagination import make_pagination
 
-PER_PAGE = os.environ.get("PER_PAGE")
+PER_PAGE = settings.PER_PAGE
 
 
 def home(request):
@@ -18,8 +19,6 @@ def home(request):
     title = "Home"
     recipes_paginator = make_pagination(request, recipes, PER_PAGE)
     context = {"recipes": recipes_paginator, "title": title}
-
-    # messages.success(request, "Que legal, Foi com sucesso")
 
     return render(request, "recipes/recipe_list.html", context)
 

@@ -16,7 +16,7 @@
 <header>
     {% include "recipes/navbar.html" %}
     <form action="{% url 'recipe:search' %}" method="GET" class="search-form">
-        <input type="search" class="search-input" name="search" value="{{search}}">
+        <input type="search" class="search-input" name="search" value="{{search}}" placeholder="Search for a recipe">
         <button type="submit" class="search-button"><i class="fas fa-search"></i></i></button>
     </form>
 </header>

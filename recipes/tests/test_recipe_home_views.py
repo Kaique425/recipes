@@ -21,3 +21,7 @@ class RecipeHomeTest(TestCase):
     def test_recipe_home_view_is_correct(self):
         view = resolve(reverse("recipe:home"))
         self.assertIs(view.func, views.home)
+
+    def test_invalid_page_query_uses_page_one(self):
+        response = self.client.get(reverse("recipe:home") + "?page=1A")
+        self.assertEqual(response.context["recipes"].paginator.num_pages, 1)

@@ -1,0 +1,39 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %} Login{% endblock title %} 
+
+{% block content %}
+ 
+<div class="container">
+    <div class="form-container">
+            <div><H1>Login</H1></div>
+            <div>
+                <form action="{% url 'author:login-validation' %}" method="POST">
+                    {% csrf_token %}
+                        {% for field in form %}
+                            <div class="form-field">
+                                <label for="{{field.id_for_label}}">{{field.label}}</label>
+                                {{field}}
+                                {% if field.help_text %}
+                                <p class="help-text">{{field.help_text}}</p>
+                                {% endif %}
+                                {{field.errors}}
+                                </div>
+                            <div class="form-field">
+                        {% endfor %}
+                    </div>
+                    <button action="submit" >Send</button>
+                    </div>
+                </form>
+                <form action="{% url "author:logout" %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{request.user.username}}">
+                    <button type="submit" >Click here.</button>
+
+                </form>
+            </div>
+        </div>
+      </div>
+    
+
+{% endblock content %}

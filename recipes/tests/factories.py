@@ -50,3 +50,13 @@ class RecipeFactory(factory.django.DjangoModelFactory):
     cover = factory.django.ImageField()
     category = factory.SubFactory(CategoryFactory)
     author = factory.SubFactory(AuthorFactory)
+
+
+def make_recipes(qtd=1):
+    author_teste = AuthorFactory()
+    if qtd == 1:
+        return RecipeFactory()
+    recipes = [
+        RecipeFactory(is_published=True, author=author_teste) for r in range(0, qtd)
+    ]
+    return recipes

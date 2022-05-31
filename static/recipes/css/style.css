@@ -216,7 +216,12 @@ footer{
     color: black;
 }
 .form-container{
-    max-width: 64rem;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    width: 40vw;
+    align-items: center;
     margin: auto;
 }
 .form-field{

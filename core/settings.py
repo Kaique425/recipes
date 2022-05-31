@@ -155,3 +155,5 @@ MESSAGES_TAGS = {
     constants.ERROR: "error-message",
     constants.WARNING: "warning-message",
 }
+
+PER_PAGE = "3"

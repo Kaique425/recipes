@@ -32,4 +32,4 @@ class RecipeSearchTest(TestCase):
         search_url = reverse("recipe:search")
         response = self.client.get(f"{search_url}?search={recipe.title}")
 
-        self.assertIn(recipe.title, response.context["recipes"].title)
+        self.assertIn(recipe.title, response.context["recipes"][0].title)

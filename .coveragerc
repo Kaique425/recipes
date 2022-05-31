@@ -1,7 +1,9 @@
 [run]
 branch = True
 omit =
+    manage.py,
     *migrations*,
     *tests*,
     core*
-    conftest.py
+    conftest.py,
+    utils/browser.py
