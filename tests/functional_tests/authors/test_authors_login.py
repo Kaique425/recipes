@@ -22,3 +22,7 @@ class AuthorLoginTest(AuthorBaseFunctionalTest):
 
         body = self.browser.find_element(By.TAG_NAME, "body")
         self.assertIn(f"Your logged as {user.username}", body.text)
+
+    def test_if_login_form_is_invalid(self):
+        self.browser.get(self.live_server_url + reverse("author:login"))
+        self.sleep()

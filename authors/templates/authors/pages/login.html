@@ -25,12 +25,6 @@
                     <button action="submit" >Send</button>
                     </div>
                 </form>
-                <form action="{% url "author:logout" %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" value="{{request.user.username}}">
-                    <button type="submit" >Click here.</button>
-
-                </form>
             </div>
         </div>
       </div>

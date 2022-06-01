@@ -1,7 +1,14 @@
 <nav>
     <ul>
+        <h1>{{request.user.username}}</h1>
         <a href="{% url 'recipe:home' %}">
             <h1>Recipes</h1>
         </a>
+        <form action="{% url "author:logout" %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="username" value="{{request.user.username}}">
+            <button type="submit" >Click here.</button>
+
+        </form>
     </ul>
 </nav>
