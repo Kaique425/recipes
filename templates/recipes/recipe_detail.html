@@ -3,6 +3,9 @@
 {% block Title %}{{title}}{% endblock Title %}
 
 {% block content %}
+    {% if user.is_authenticated %}
+    {% include "recipes/search-bar.html" %}
+    {% endif %}
 <div class="card-container card-detail-container">
     <div class="card card-detail">
         <div>

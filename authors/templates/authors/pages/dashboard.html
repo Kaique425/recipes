@@ -5,7 +5,7 @@
 {% block content %}
  
     <div class="author-dashboard">
-        <h2>Dashboard {{user}}</h2>
+        <h1 class="dashboard-title" >Dashboard {{user}}</h1>
         <p><a href="{% url "author:create_recipe" %}">Create a recipe</a></p>
         <ul>
             {% for recipe in recipes %}

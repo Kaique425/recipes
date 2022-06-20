@@ -42,7 +42,17 @@ footer{
     padding:20px;
     color:white;
 }
-
+.dashboard-title{
+    margin: 50px 0px;
+}
+.author-dashboard{
+    display: flex;
+    flex-direction:column;
+    flex-wrap:wrap;
+    align-content:center;
+    align-items:flex-start;
+    height: 70vw;
+}
 .navbar-container{
     display:flex;
     justify-content:space-between;
@@ -178,7 +188,7 @@ footer{
 .empty-card-info{
     text-align:center;
     padding: 100px;
-    width:100vw;
+
     height:100vh;
 }
 .index{
@@ -255,6 +265,19 @@ footer{
     grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
     gap: 10px;
     width: 100%;
+
+}
+.create-rcp-btn{
+    border-radius: 3px;
+    padding: 12px;
+    border:none;
+    background-color: black;
+    color: white;
+    transition: all ease-in-out 100ms;
+}
+
+.form-field select{
+    padding: 5px 2px;
 }
 label{
     display:block;

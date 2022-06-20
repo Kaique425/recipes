@@ -11,14 +11,12 @@
         integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{% static 'recipes/css/style.css' %}">
+    <base href="/">
     <script src="{% static "recipes/js/script.js" %}" defer></script>
     <title>{% block Title %}{% endblock Title %}</title>
 </head>
 <header>
     {% include "recipes/navbar.html" %}
-    {% if user.is_authenticated %}
-        {% include "recipes/search-bar.html" %}
-    {% endif %}
 </header>
 
 <body>
