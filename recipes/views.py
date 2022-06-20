@@ -1,12 +1,9 @@
-import os
-from urllib import request
-
 from django.conf import settings
-from django.contrib import messages
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from django.views.generic import DetailView, ListView
 
 from .models import Recipe
 from .utils.pagination import make_pagination
@@ -14,21 +11,69 @@ from .utils.pagination import make_pagination
 PER_PAGE = settings.PER_PAGE
 
 
-def home(request):
-    recipes = Recipe.objects.filter(is_published=True)
-    title = "Home"
-    recipes_paginator = make_pagination(request, recipes, PER_PAGE)
-    context = {"recipes": recipes_paginator, "title": title}
+class RecipeListViewBase(ListView):
+    model = Recipe
+    context_object_name = "recipes"
+    ordering = ["-id"]
 
-    return render(request, "recipes/recipe_list.html", context)
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        qs = qs.filter(is_published=True)
+        return qs
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["recipes"] = make_pagination(
+            self.request, context.get("recipes"), PER_PAGE
+        )
+        return context
 
 
-def category(request, id):
-    recipes = Recipe.objects.filter(category__id=id)
-    title = f"{recipes.first().category.name}"
-    recipes_paginator = make_pagination(request, recipes, PER_PAGE)
-    context = {"recipes": recipes_paginator, "title": title}
-    return render(request, "recipes/recipe_list.html", context)
+class RecipeListViewHome(RecipeListViewBase):
+    template_name = "recipe_list.html"
+
+
+class SearchRecipeListView(RecipeListViewBase):
+    template_name = "recipes/search.html"
+
+    def get_queryset(self, *args, **kwargs):
+        search = self.request.GET.get("search", "").strip()
+
+        if not search:
+            raise Http404()
+        queryset = super().get_queryset(*args, **kwargs)
+        queryset = queryset.filter(
+            Q(
+                Q(title__icontains=search) | Q(description__icontains=search),
+            ),
+        )
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        search = self.request.GET.get("search", "").strip()
+        print(search)
+        context.update(
+            {
+                "search_url": f"&search={search}",
+                "search": search,
+                "url_view": reverse("recipe:search"),
+            }
+        )
+
+        return context
+
+
+class CategoryRecipeListView(RecipeListViewBase):
+    template_name = "recipe_list.html"
+
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+        queryset = queryset.filter(
+            category__id=self.kwargs.get("id"),
+        )
+
+        return queryset
 
 
 def recipe(request, id):
@@ -38,16 +83,20 @@ def recipe(request, id):
     return render(request, "recipes/recipe_detail.html", context)
 
 
-def search(request: request):
-    search = request.GET.get("search", "").strip()
-    if not search:
-        raise Http404()
-    recipes = Recipe.objects.filter(
-        Q(
-            Q(title__icontains=search) | Q(description__icontains=search),
-            is_published=True,
-        )
-    ).order_by("-id")
-    recipes_paginator = make_pagination(request, recipes, PER_PAGE)
-    context = {"search": search, "recipes": recipes_paginator}
-    return render(request, "recipes/search.html", context)
+class RecipeDetailView(DetailView):
+    model = Recipe
+    template_name = "recipes/recipe_detail.html"
+    context_object_name = "recipe"
+
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+        queryset.filter(is_published=True)
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        recipe = get_object_or_404(Recipe, id=self.kwargs.get("pk"))
+        title = f"Recipe: {recipe.title}"
+        context.update({"is_detail_page": True, "title": title})
+
+        return context

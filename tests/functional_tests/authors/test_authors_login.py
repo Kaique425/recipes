@@ -25,4 +25,31 @@ class AuthorLoginTest(AuthorBaseFunctionalTest):
 
     def test_if_login_form_is_invalid(self):
         self.browser.get(self.live_server_url + reverse("author:login"))
-        self.sleep()
+        form = self.browser.find_element(
+            By.XPATH, "/html/body/main/div[1]/div/div[2]/form"
+        )
+        form.click()
+        username = self.get_by_id("id_username", form)
+        password = self.get_by_id("id_password", form)
+        username.send_keys(" ")
+        password.send_keys(" ")
+        form.submit()
+        self.assertIn(
+            "Invalid form data.", self.browser.find_element(By.TAG_NAME, "body").text
+        )
+
+    def test_if_login_credentials_is_invalid(self):
+        self.browser.get(self.live_server_url + reverse("author:login"))
+        form = self.browser.find_element(
+            By.XPATH, "/html/body/main/div[1]/div/div[2]/form"
+        )
+        form.click()
+        username = self.get_by_id("id_username", form)
+        password = self.get_by_id("id_password", form)
+        username.send_keys("invalid_username")
+        password.send_keys("invalid_password")
+        form.submit()
+        self.assertIn(
+            "Invalid password or username.",
+            self.browser.find_element(By.TAG_NAME, "body").text,
+        )

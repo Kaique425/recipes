@@ -27,6 +27,6 @@ class RecipeHomePageFunctionalTest(RecipeBaseFunctionalTest):
     def test_recipe_home_page_pagination(self):
         recipes = make_recipes(6)
         self.browser.get(self.live_server_url)
-        index = self.browser.find_element(By.XPATH, "//a[@href='/?page=2']")
+        index = self.browser.find_element(By.XPATH, "/html/body/main/div[2]/a[3]")
         index.click()
         self.assertEqual(len(self.browser.find_elements(By.CLASS_NAME, "card")), 3)

@@ -11,6 +11,7 @@
         integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{% static 'recipes/css/style.css' %}">
+    <script src="{% static "recipes/js/script.js" %}" defer></script>
     <title>{% block Title %}{% endblock Title %}</title>
 </head>
 <header>
@@ -36,21 +37,22 @@
             {% if not recipes.has_previous %}
                 <a href="#" class="index browser disabled" >Previous</a>
             {% else %}
-                <a href="{% url 'recipe:home' %}?page={{recipes.previous_page_number}}" class="index browser enabled" >Previous</a>                
+                <a href="{{url_view}}?page={{recipes.previous_page_number}}{{search_url}}" class="index browser enabled" >Previous</a>                
             {% endif %}
             {% for num in recipes.paginator.page_range%}
                 {% if num == recipes.number %}
-                    <a href="{% url 'recipe:home' %}?page={{num}}" class="index number selected">{{num}}</a>
+                    <a href="{{url_view}}?page={{num}}{{search_url}}" class="index number selected">{{num}}</a>
                 {% else %}
-                    <a href="{% url 'recipe:home' %}?page={{num}}" class="index number">{{num}}</a>
+                    <a href="{{url_view}}?page={{num}}{{search_url}}" class="index number">{{num}}</a>
                 {% endif %}
             {% endfor %}
             {% if recipes.has_next %}
-                <a href="{% url 'recipe:home' %}?page={{recipes.next_page_number}}" class="index browser enabled"> Next </a>
+                <a href="{{url_view}}?page={{recipes.next_page_number}}{{search_url}}" class="index browser enabled"> Next </a>
             {% else %}
                 <a href="#" class="index browser disabled">Next</a>
             {% endif %}
                 {% endif %}
+                 
         </div>
     </main>
     <footer>

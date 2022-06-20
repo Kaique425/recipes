@@ -1,0 +1,25 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %} Register {% endblock title %} 
+
+{% block content %}
+ 
+    <div class="author-dashboard">
+        <h2>Dashboard {{user}}</h2>
+        <p><a href="{% url "author:create_recipe" %}">Create a recipe</a></p>
+        <ul>
+            {% for recipe in recipes %}
+                <li><a href="{% url "author:edit_recipe" recipe.id %}">{{recipe.title}}</a>
+                <form id="form-delete"  action="{% url "author:dashboard_recipe_delete" recipe.id %}" method="POST">
+                        {% csrf_token %}
+                    <button type="submit" ><strong>X</strong></button>
+                </form>
+                
+                </li>
+            {% empty %}
+                <h2>There's no recipe to be showed</h2>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock content %}

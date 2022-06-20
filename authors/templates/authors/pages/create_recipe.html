@@ -1,0 +1,38 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %} Register {% endblock title %} 
+
+{% block content %}
+ 
+<div class="container">
+    <div class="form-container">
+            <div><H1>Dashboard Recipe</H1></div>
+            <a href="{% url "author:dashboard" %}">See your <strong>pending recipes</strong>...</a>
+            <div>
+                <form action="{% url 'author:create_recipe'%}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        {% for field in form %}
+                            <div class="form-field">
+                                <label for="{{field.id_for_label}}">{{field.label}}</label>
+                                {{field}}
+                                {% if field.help_text %}
+                                <p class="help-text">{{field.help_text}}</p>
+                                {% endif %}
+                                {{field.errors}}
+                                </div>
+                            {% if field.name == "cover" and field.value.url %}
+                                <label for="img">Current cover:</label>
+                                <img src="{{field.value.url}}" alt="Capa de {{recipe.title}}">
+                            {% endif %}
+                            <div class=af"form-field">
+                        {% endfor %}
+                    </div>
+                    <button action="submit" >Send</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+      </div>
+    
+
+{% endblock content %}

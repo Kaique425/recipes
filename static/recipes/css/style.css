@@ -22,6 +22,7 @@ h1{
 a{
     text-decoration: none;
     color: black;
+    
 }
 ul{
     margin:0px auto;
@@ -33,6 +34,33 @@ main{
 }
 img{
     width:100%;
+}
+footer{
+    display:flex;
+    justify-content: space-around;
+    background-color:black;
+    padding:20px;
+    color:white;
+}
+
+.navbar-container{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.navbar-container li{
+    margin:0px 10px;
+    list-style-type:none;
+    transform: 150ms ease-in-out;
+}
+.navbar-container li:hover{
+    transform:scale(1.03)
+}
+.logout-btn{
+    background-color: transparent;
+    color: white;
+    border-style:none;
+    font-size: 30px;
 }
 
 
@@ -152,13 +180,6 @@ img{
     padding: 100px;
     width:100vw;
     height:100vh;
-}
-footer{
-    display:flex;
-    justify-content: space-around;
-    background-color:black;
-    padding:20px;
-    color:white;
 }
 .index{
     scale: 1;

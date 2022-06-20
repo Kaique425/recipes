@@ -10,7 +10,7 @@ from recipes.tests.factories import CategoryFactory, RecipeFactory
 class RecipeSearchTest(TestCase):
     def test_recipe_search_view_is_correct(self):
         view = resolve(reverse("recipe:search")).func
-        self.assertIs(view, views.search)
+        self.assertIs(view.view_class, views.SearchRecipeListView)
 
     def test_recipe_search_view_status_code(self):
         status_code = self.client.get(
