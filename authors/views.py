@@ -78,7 +78,7 @@ def login_validation_view(request):
 
 @login_required(login_url="author:login", redirect_field_name="next")
 def dashboard(request):
-    recipes = Recipe.objects.filter(is_published=False, author=request.user)
+    recipes = Recipe.objects.filter(author=request.user).order_by("is_published")
 
     context = {"recipes": recipes}
     return render(request, "authors/pages/dashboard.html", context)

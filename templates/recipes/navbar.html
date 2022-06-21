@@ -6,7 +6,7 @@
             </a>
         </li>
         <li>
-            <a href="{% url "author:dashboard" %}"><h1>{{request.user.username}}</h1></a>
+            <a href="{% url "author:dashboard" %}"><h1>{{request.user.username|title}}</h1></a>
         </li>
         <li>
             <form action="{% url "author:logout" %}" method="POST">
