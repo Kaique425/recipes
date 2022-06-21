@@ -13,7 +13,7 @@
                 {% csrf_token %}
                 <input type="hidden" name="username" value="{{request.user.username}}">
                 {% if user.is_authenticated %}
-                    <button class="logout-btn" type="submit" >Logout</button>
+                    <button class="logout-btn" type="submit" >Logout <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
                 {% endif %}
     
             </form>

@@ -90,7 +90,7 @@ class CategoryRecipeListView(RecipeListViewBase):
 
         return queryset
 
-
+@login_required(login_url="author:login", redirect_field_name="next")
 def recipe(request, id):
     recipe = get_object_or_404(Recipe, id=id)
     title = f"Recipe: {recipe.title}"

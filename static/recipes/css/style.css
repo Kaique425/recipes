@@ -311,9 +311,13 @@ footer{
     border-radius: 3px;
     padding: 12px;
     border:none;
-    background-color: black;
+    background-color: #00a645;
     color: white;
     transition: all ease-in-out 100ms;
+}
+.create-rcp-btn:hover{
+    cursor:pointer;
+    transform:scale(1.03);
 }
 
 .form-field select{
