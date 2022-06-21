@@ -4,13 +4,15 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
-
+from django.utils.decorators import method_decorator
 from .models import Recipe
 from .utils.pagination import make_pagination
-
+from django.contrib.auth.decorators import login_required
 PER_PAGE = settings.PER_PAGE
 
-
+@method_decorator(
+    login_required(login_url="author:login", redirect_field_name="next"),name="dispatch"
+)
 class RecipeListViewBase(ListView):
     model = Recipe
     context_object_name = "recipes"
@@ -29,10 +31,18 @@ class RecipeListViewBase(ListView):
         return context
 
 
+@method_decorator(login_required(
+    login_url="author:login", redirect_field_name="next"),
+    name="dispatch")
 class RecipeListViewHome(RecipeListViewBase):
     template_name = "recipe_list.html"
 
 
+@method_decorator(
+    login_required(
+        login_url="author:login", redirect_field_name="next"
+    ), name="dispatch"
+)
 class SearchRecipeListView(RecipeListViewBase):
     template_name = "recipes/search.html"
 
@@ -64,6 +74,11 @@ class SearchRecipeListView(RecipeListViewBase):
         return context
 
 
+@method_decorator(
+    login_required(
+        login_url="author:login", redirect_field_name="next"
+    ), name="dispatch"
+)
 class CategoryRecipeListView(RecipeListViewBase):
     template_name = "recipe_list.html"
 
@@ -83,6 +98,12 @@ def recipe(request, id):
     return render(request, "recipes/recipe_detail.html", context)
 
 
+
+@method_decorator(
+    login_required(
+        login_url="author:login", redirect_field_name="next"
+    ), name="dispatch"
+)
 class RecipeDetailView(DetailView):
     model = Recipe
     template_name = "recipes/recipe_detail.html"
