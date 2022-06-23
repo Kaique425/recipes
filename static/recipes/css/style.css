@@ -48,6 +48,10 @@ footer{
     padding:20px;
     color:white;
 }
+.div-btn-add-rcp{
+    text-align:center;
+    width: 90%;
+}
 .rcp-list-div{
     margin:auto;
 }

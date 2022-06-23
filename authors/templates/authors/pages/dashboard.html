@@ -7,7 +7,7 @@
     <div class="dshb-title-div" >
         <h1 class="dashboard-title" >Dashboard {{user|title}}</h1>
     </div>
-    <div><a href="{% url "author:create_recipe" %}"><button class="create-rcp-btn" ><strong>Create a recipe &#10010;</strong></button></a></div>
+    <div class="div-btn-add-rcp" ><a href="{% url "author:create_recipe" %}"><button class="create-rcp-btn" ><strong>Create a recipe &#10010;</strong></button></a></div>
     <div class="author-dashboard">
         <div class="rcp-list-div" >
             {% for recipe in recipes %}
