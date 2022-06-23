@@ -79,8 +79,13 @@ def login_validation_view(request):
 @login_required(login_url="author:login", redirect_field_name="next")
 def dashboard(request):
     recipes = Recipe.objects.filter(author=request.user).order_by("is_published")
+    info = {
+        "is_published_rcp_length":len(recipes.filter(is_published=True)),
+        "not_published_rcp_length": len(recipes.filter(is_published=False)),
+        "last_created_recipe": recipes.order_by("created_at").first()
+    }
 
-    context = {"recipes": recipes}
+    context = {"recipes": recipes, "info":info}
     return render(request, "authors/pages/dashboard.html", context)
 
 
@@ -126,8 +131,7 @@ class DashboardRecipes(View):
     def get_recipe(self, id):
         recipe = None
         if id:
-            recipe = Recipe.objects.filter(
-                is_published=False, author=self.request.user, pk=id
+            recipe = Recipe.objects.filter(author=self.request.user, pk=id
             ).first()
 
             if not recipe:

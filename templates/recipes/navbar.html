@@ -1,22 +1,24 @@
 <nav>
     <ul class="navbar-container"  >
-        <li>
+        <div class="nav-home-section" >
             <a href="{% url 'recipe:home' %}">
                 <h1>Recipes</h1>
             </a>
-        </li>
-        <li>
-            <a href="{% url "author:dashboard" %}"><h1>{{request.user.username|title}}</h1></a>
-        </li>
-        <li>
-            <form action="{% url "author:logout" %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="username" value="{{request.user.username}}">
-                {% if user.is_authenticated %}
-                    <button class="logout-btn" type="submit" >Logout <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
-                {% endif %}
-    
-            </form>
-        </li>
+        </div>
+        <div class="nav-logout-section" >
+            <li>
+                <a href="{% url "author:dashboard" %}"><h1>{{request.user.username|title}}</h1></a>
+            </li>
+            <li>
+                <form action="{% url "author:logout" %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="username" value="{{request.user.username}}">
+                    {% if user.is_authenticated %}
+                        <button class="logout-btn" type="submit" >Logout <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+                    {% endif %}
+        
+                </form>
+            </li>
+        </div>
     </ul>
 </nav>
