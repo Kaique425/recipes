@@ -1,17 +1,45 @@
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import Http404
+from django.forms.models import model_to_dict
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-from django.views.generic import DetailView, ListView
 from django.utils.decorators import method_decorator
+from django.views.generic import DetailView, ListView
+
 from .models import Recipe
 from .utils.pagination import make_pagination
-from django.contrib.auth.decorators import login_required
+
 PER_PAGE = settings.PER_PAGE
 
+
 @method_decorator(
-    login_required(login_url="author:login", redirect_field_name="next"),name="dispatch"
+    login_required(login_url="author:login", redirect_field_name="next"),
+    name="dispatch",
+)
+class RecipeDetailView(DetailView):
+    model = Recipe
+    template_name = "recipes/recipe_detail.html"
+    context_object_name = "recipe"
+
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+        queryset.filter(is_published=True)
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        recipe = get_object_or_404(Recipe, id=self.kwargs.get("pk"))
+        title = f"Recipe: {recipe.title}"
+        context.update({"is_detail_page": True, "title": title})
+
+        return context
+
+
+@method_decorator(
+    login_required(login_url="author:login", redirect_field_name="next"),
+    name="dispatch",
 )
 class RecipeListViewBase(ListView):
     model = Recipe
@@ -31,17 +59,38 @@ class RecipeListViewBase(ListView):
         return context
 
 
-@method_decorator(login_required(
-    login_url="author:login", redirect_field_name="next"),
-    name="dispatch")
+class RecipeDetailViewApi(RecipeDetailView):
+    def render_to_response(self, context, **response_kwargs):
+        recipe = self.get_context_data()["recipe"]
+        recipe = model_to_dict(recipe)
+        if recipe.get("cover"):
+            recipe["cover"] = recipe["cover"].url
+        else:
+            pass
+        return JsonResponse(recipe, safe=False)
+
+
+class RecipeListViewHomeApi(RecipeListViewBase):
+    template_name = "recipe_list.html"
+
+    def render_to_response(self, context, **response_kwargs):
+
+        recipe = self.get_context_data()["recipes"].object_list.values()
+        print(recipe)
+        return JsonResponse(list(recipe), safe=False)
+
+
+@method_decorator(
+    login_required(login_url="author:login", redirect_field_name="next"),
+    name="dispatch",
+)
 class RecipeListViewHome(RecipeListViewBase):
     template_name = "recipe_list.html"
 
 
 @method_decorator(
-    login_required(
-        login_url="author:login", redirect_field_name="next"
-    ), name="dispatch"
+    login_required(login_url="author:login", redirect_field_name="next"),
+    name="dispatch",
 )
 class SearchRecipeListView(RecipeListViewBase):
     template_name = "recipes/search.html"
@@ -75,9 +124,8 @@ class SearchRecipeListView(RecipeListViewBase):
 
 
 @method_decorator(
-    login_required(
-        login_url="author:login", redirect_field_name="next"
-    ), name="dispatch"
+    login_required(login_url="author:login", redirect_field_name="next"),
+    name="dispatch",
 )
 class CategoryRecipeListView(RecipeListViewBase):
     template_name = "recipe_list.html"
@@ -90,34 +138,10 @@ class CategoryRecipeListView(RecipeListViewBase):
 
         return queryset
 
+
 @login_required(login_url="author:login", redirect_field_name="next")
 def recipe(request, id):
     recipe = get_object_or_404(Recipe, id=id)
     title = f"Recipe: {recipe.title}"
     context = {"recipe": recipe, "is_detail_page": True, "title": title}
     return render(request, "recipes/recipe_detail.html", context)
-
-
-
-@method_decorator(
-    login_required(
-        login_url="author:login", redirect_field_name="next"
-    ), name="dispatch"
-)
-class RecipeDetailView(DetailView):
-    model = Recipe
-    template_name = "recipes/recipe_detail.html"
-    context_object_name = "recipe"
-
-    def get_queryset(self, *args, **kwargs):
-        queryset = super().get_queryset(*args, **kwargs)
-        queryset.filter(is_published=True)
-        return queryset
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        recipe = get_object_or_404(Recipe, id=self.kwargs.get("pk"))
-        title = f"Recipe: {recipe.title}"
-        context.update({"is_detail_page": True, "title": title})
-
-        return context
