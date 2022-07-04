@@ -1,8 +1,10 @@
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.forms import CharField
 from django.urls import reverse
 from django.utils.text import slugify
+from tag.models import Tag
 
 
 class Category(models.Model):
@@ -12,7 +14,15 @@ class Category(models.Model):
         return self.name
 
 
+class RecipeManager(models.Manager):
+    def get_published(self):
+        return self.filter(
+            is_published=True,
+        )
+
+
 class Recipe(models.Model):
+    objects = RecipeManager()
     title = models.CharField(max_length=65)
     description = models.CharField(max_length=165)
     slug = models.SlugField()
@@ -28,6 +38,7 @@ class Recipe(models.Model):
     cover = models.ImageField(upload_to="recipes/cover/%Y/%m/%d/")
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    tags = GenericRelation(Tag, related_query_name="recipes")
 
     class Meta:
         ordering = ("id",)

@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.db.models.aggregates import Count
 from django.forms.models import model_to_dict
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -14,6 +15,19 @@ from .utils.pagination import make_pagination
 PER_PAGE = settings.PER_PAGE
 
 
+def theory(request):
+    # Q(id__gt=500, title__icontains="d") | Q(title__icontains="bolo")
+    recipe = Recipe.objects.get_published()
+    # Count()
+    number_of_recipes = recipe.aggregate(Count("id"))
+
+    context = {
+        "recipes": recipe,
+        "recipe_number": number_of_recipes,
+    }
+    return render(request, "recipes/theory.html", context)
+
+
 @method_decorator(
     login_required(login_url="author:login", redirect_field_name="next"),
     name="dispatch",
@@ -25,7 +39,9 @@ class RecipeDetailView(DetailView):
 
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)
-        queryset.filter(is_published=True)
+        queryset = queryset.filter(is_published=True)
+        queryset = queryset.select_related("author", "category")
+
         return queryset
 
     def get_context_data(self, *args, **kwargs):
@@ -49,6 +65,7 @@ class RecipeListViewBase(ListView):
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
         qs = qs.filter(is_published=True)
+        qs = qs.select_related("author", "category")
         return qs
 
     def get_context_data(self, *args, **kwargs):
@@ -119,6 +136,21 @@ class SearchRecipeListView(RecipeListViewBase):
                 "url_view": reverse("recipe:search"),
             }
         )
+
+        return context
+
+
+class RecipeListViewTag(RecipeListViewBase):
+    template_name = "recipes/search.html"
+
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+        queryset = queryset.filter(tags__slug=self.kwargs.get("slug", ""))
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context.update({})
 
         return context
 
