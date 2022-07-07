@@ -36,18 +36,23 @@
             </div>
         </div>
         {% if is_detail_page is not True %}
-            <div class="card-see-more">
-                <a href="">
-                    <h3>See more...</h3>
-                </a>
-            </div>
+        <div class="card-see-more">
+            <a href="">
+                <h3>See more...</h3>
+            </a>
+        </div>
         {% endif %}
         {% if is_detail_page is True %}
-            <div class="preparation-steps">
-                <div>{{recipe.preparation_steps| linebreaksbr}}</div>
-            </div>
+        <div class="preparation-steps">
+            <div>{{recipe.preparation_steps| linebreaksbr}}</div>
+        </div>
         {% endif %}
-
+        
+        <div class="card-div-tags" >
+            {% for tag in recipe.tags.all %}
+                <a href=""><strong>#{{tag.name}}</strong></a>
+            {% endfor %}
+        </div>
     </div>
 </div>
 

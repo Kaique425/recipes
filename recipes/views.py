@@ -144,6 +144,7 @@ class SearchRecipeListView(RecipeListViewBase):
 
 class RecipeListViewTag(RecipeListViewBase):
     template_name = "recipes/search.html"
+    context_object_name = "recipes"
 
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)

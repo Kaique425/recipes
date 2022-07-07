@@ -10,7 +10,7 @@
                 <a href="{% url "author:dashboard" %}"><h1>{{request.user.username|title}}</h1></a>
             </li>
             <li>
-                <form action="{% url "author:logout" %}" method="POST">
+                <form  class="form-logout" action="{% url "author:logout" %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="username" value="{{request.user.username}}">
                     {% if user.is_authenticated %}

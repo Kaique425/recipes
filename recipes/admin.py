@@ -4,11 +4,12 @@ from tag.models import Tag
 
 from .models import Category, Recipe
 
-
-class TagInline(GenericStackedInline):
+"""class TagInline(GenericStackedInline):
     model = Tag
     fields = ("name",)
     extra = 1
+
+"""
 
 
 @admin.register(Category)
@@ -27,6 +28,10 @@ class RecipeAdmin(admin.ModelAdmin):
     ordering = ("is_published",)
     prepopulated_fields = {"slug": ("title",)}
 
-    inlines = [
+    autocomplete_fields = ("tags",)
+
+
+"""    inlines = [
         TagInline,
     ]
+"""

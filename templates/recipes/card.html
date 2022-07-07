@@ -27,7 +27,7 @@
                 </div>
                 <div class="card-div-tags" >
                     {% for tag in recipe.tags.all %}
-                        <a href=""><strong>#{{tag.name}}</strong></a>
+                        <a href="{% url "recipe:tags" tag.slug %}"><strong>#{{tag.name}}</strong></a>
                     {% endfor %}
                 </div>
                 <div class="card-see-more">
