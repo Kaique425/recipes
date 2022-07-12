@@ -2,15 +2,37 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.http import require_POST
+from django.views.generic import TemplateView
 from recipes.forms import RecipeForm
 from recipes.models import Recipe
 
+from authors.models import Profile
+
 from .forms import LoginForm, RegisterForm
+
+
+class ProfileView(TemplateView):
+    template_name = "authors/pages/profile.html"
+
+    def get(self, request, *args, **kwargs):
+
+        context = self.get_context_data(**kwargs)
+        profile_id = context.get("pk")
+        profile = get_object_or_404(
+            Profile.objects.filter(pk=profile_id).select_related("author"),
+            pk=profile_id,
+        )
+        return self.render_to_response(
+            {
+                **context,
+                "profile": profile,
+            }
+        )
 
 
 def register(request):
@@ -80,12 +102,12 @@ def login_validation_view(request):
 def dashboard(request):
     recipes = Recipe.objects.filter(author=request.user).order_by("is_published")
     info = {
-        "is_published_rcp_length":len(recipes.filter(is_published=True)),
+        "is_published_rcp_length": len(recipes.filter(is_published=True)),
         "not_published_rcp_length": len(recipes.filter(is_published=False)),
-        "last_created_recipe": recipes.order_by("created_at").first()
+        "last_created_recipe": recipes.order_by("created_at").first(),
     }
 
-    context = {"recipes": recipes, "info":info}
+    context = {"recipes": recipes, "info": info}
     return render(request, "authors/pages/dashboard.html", context)
 
 
@@ -131,8 +153,7 @@ class DashboardRecipes(View):
     def get_recipe(self, id):
         recipe = None
         if id:
-            recipe = Recipe.objects.filter(author=self.request.user, pk=id
-            ).first()
+            recipe = Recipe.objects.filter(author=self.request.user, pk=id).first()
 
             if not recipe:
                 raise Http404()
