@@ -8,7 +8,11 @@
                     <h2>{{recipe.title}}</h2>
                 </div>
                 <div class="card-meta-info">
-                    <span><i class="fas fa-user"></i> {{recipe.author.username|title}}
+                    <span><i class="fas fa-user"></i> {% if recipe.author.profile %}
+                        <a href="{% url "author:profile" recipe.author.profile.id %}">{{recipe.author.username|title}}</a>
+                        {% else %}
+                        {{recipe.author.username|title}}
+                        {% endif %}
                     <span><i class="far fa-calendar-alt"></i> {{recipe.created_at|date:"d/m/Y"}}</span>
                     {% if recipe.category is not None %}
                     <a href="{% url 'recipe:category' recipe.category.id %}"><span><i class="fas fa-pizza-slice"></i> <strong>{{recipe.category.name}}</strong></span></a>
