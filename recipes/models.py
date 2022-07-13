@@ -1,9 +1,13 @@
+import os
+
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.forms import CharField
 from django.urls import reverse
 from django.utils.text import slugify
+from PIL import Image
 from tag.models import Tag
 
 
@@ -49,8 +53,28 @@ class Recipe(models.Model):
     def get_absolute_url(self):
         return reverse("recipe:recipe", args=(self.id,))
 
+    def resize_image(self, image, new_width=800):
+        image_full_path = os.path.join(settings.MEDIA_ROOT, image.name)
+        pillow_image = Image.open(image_full_path)
+        old_width, old_height = pillow_image.size
+
+        if old_width < new_width:
+            pillow_image.close()
+            return
+
+        new_height = round((new_width * old_height) / old_width)
+        new_image = pillow_image.resize((new_width, new_height), Image.LANCZOS)
+        new_image.save(
+            image_full_path,
+            optimize=True,
+            quality=50,
+        )
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = f"{slugify(self.title)}"
+        save = super().save(*args, **kwargs)
+        if self.cover:
+            self.resize_image(self.cover, 800)
 
-        return super().save(*args, **kwargs)
+        return save

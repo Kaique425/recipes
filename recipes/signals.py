@@ -5,8 +5,7 @@ from django.dispatch import receiver
 
 from .models import Recipe
 
-
-def delete_cover(instance):
+"""def delete_cover(instance):
     try:
         os.remove(instance.cover.path)
         print(f"cover of id: {instance.id} was deleted")
@@ -32,3 +31,4 @@ def recipe_post_signal(sender, instance, *args, **kwargs):
     if is_new_cover:
         delete_cover(old_instance)
         print(f"É uma nova imagem ? {answer}")
+"""
