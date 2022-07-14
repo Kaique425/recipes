@@ -3,14 +3,14 @@ from unicodedata import category
 # from conftest import recipe
 from django.test import TestCase
 from django.urls import resolve, reverse
-from recipes import views
+from recipes.views import site
 from recipes.tests.factories import CategoryFactory, RecipeFactory
 
 
 class RecipeSearchTest(TestCase):
     def test_recipe_search_view_is_correct(self):
         view = resolve(reverse("recipe:search")).func
-        self.assertIs(view.view_class, views.SearchRecipeListView)
+        self.assertIs(view.view_class, site.SearchRecipeListView)
 
     def test_recipe_search_view_status_code(self):
         status_code = self.client.get(

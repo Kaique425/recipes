@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.test.testcases import TestCase
 from django.urls import resolve, reverse
-from recipes import views
+from recipes.views import site
 
 from .factories import RecipeFactory
 
@@ -20,7 +20,7 @@ class RecipeHomeTest(TestCase):
 
     def test_recipe_home_view_is_correct(self):
         view = resolve(reverse("recipe:home"))
-        self.assertIs(view.func.view_class, views.RecipeListViewHome)
+        self.assertIs(view.func.view_class, site.RecipeListViewHome)
 
     def test_invalid_page_query_uses_page_one(self):
         response = self.client.get(reverse("recipe:home") + "?page=1A")

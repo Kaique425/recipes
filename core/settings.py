@@ -41,8 +41,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    # development apps
     "debug_toolbar",
     "livereload",
+    # application apps
     "recipes",
     "authors",
     "tag",

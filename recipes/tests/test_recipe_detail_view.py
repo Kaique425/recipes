@@ -1,6 +1,6 @@
 from django.test.testcases import TestCase
 from django.urls import resolve, reverse
-from recipes import views
+from recipes.views import site
 
 from .factories import RecipeFactory
 
@@ -18,4 +18,4 @@ class RecipeDetailTest(TestCase):
 
     def test_recipe_recipe_detail_view_is_correct(self):
         view = resolve(reverse("recipe:recipe", kwargs={"pk": 1}))
-        self.assertIs(view.func.view_class, views.RecipeDetailView)
+        self.assertIs(view.func.view_class, site.RecipeDetailView)

@@ -9,8 +9,8 @@ from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, ListView
 
-from .models import Recipe
-from .utils.pagination import make_pagination
+from ..models import Recipe
+from ..utils.pagination import make_pagination
 
 PER_PAGE = settings.PER_PAGE
 
