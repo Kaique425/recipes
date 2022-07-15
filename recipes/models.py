@@ -20,8 +20,12 @@ class Category(models.Model):
 
 class RecipeManager(models.Manager):
     def get_published(self):
-        return self.filter(
-            is_published=True,
+        return (
+            self.filter(
+                is_published=True,
+            )
+            .select_related("author", "category")
+            .prefetch_related("tags")
         )
 
 

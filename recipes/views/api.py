@@ -1,9 +1,22 @@
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from recipes.serializers import RecipeSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from ..models import Recipe
+
 
 @api_view(("GET",))
-def recipe_list(request):
+def recipe_api_list(request):
+    recipes = Recipe.objects.get_published()
+    serializer = RecipeSerializer(instance=recipes, many=True)
+    return Response(serializer.data)
 
-    return Response("OK, status: 200")
+
+@api_view(("GET",))
+def recipe_api_detail(request, pk):
+    recipe = get_object_or_404(Recipe.objects.get_published(), pk=pk)
+    serializer = RecipeSerializer(instance=recipe, many=False)
+
+    return Response(serializer.data)
