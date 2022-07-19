@@ -2,21 +2,40 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from tag.models import Tag
 
-from .models import Category
+from .models import Category, Recipe
 
 User = get_user_model()
 
 
-class RecipeSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    title = serializers.CharField(max_length=65)
-    description = serializers.CharField(max_length=165)
-    public = serializers.BooleanField(source="is_published")
-    preparation = serializers.SerializerMethodField()
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = (
+            "id",
+            "slug",
+            "name",
+        )
+
+
+class RecipeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recipe
+        fields = (
+            "id",
+            "title",
+            "description",
+            "public",
+            "preparation",
+            "category",
+            "author",
+            "tags",
+        )
+
+    public = serializers.BooleanField(source="is_published", read_only=True)
+    preparation = serializers.SerializerMethodField(read_only=True)
     category = serializers.StringRelatedField()
     author = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-    tags = serializers.PrimaryKeyRelatedField(
-        queryset=Tag.objects.all(),
+    tags = TagSerializer(
         many=True,
     )
 
