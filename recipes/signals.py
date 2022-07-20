@@ -27,7 +27,7 @@ def recipe_post_signal(sender, instance, *args, **kwargs):
 
     if old_instance:
         return
-    is_new_cover = old_instance.cover != instance.cover
-
-    if is_new_cover:
-        delete_cover(old_instance)
+    if instance.cover:
+        is_new_cover = old_instance.cover != instance.cover
+        if is_new_cover:
+            delete_cover(old_instance)

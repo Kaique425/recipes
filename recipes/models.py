@@ -1,4 +1,6 @@
 import os
+import string
+from random import SystemRandom
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -33,7 +35,7 @@ class Recipe(models.Model):
     objects = RecipeManager()
     title = models.CharField(max_length=65)
     description = models.CharField(max_length=165)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
     preparations_time = models.IntegerField()
     preparations_time_unit = models.CharField(max_length=65)
     servings = models.IntegerField()
@@ -43,12 +45,10 @@ class Recipe(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=False)
-    cover = models.ImageField(upload_to="recipes/cover/%Y/%m/%d/")
+    cover = models.ImageField(upload_to="recipes/cover/%Y/%m/%d/", blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    tags = models.ManyToManyField(
-        Tag, related_name="tags", blank=True, default="", null=True
-    )
+    tags = models.ManyToManyField(Tag, related_name="tags", blank=True, default="")
 
     class Meta:
         ordering = ("id",)
@@ -78,7 +78,10 @@ class Recipe(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = f"{slugify(self.title)}"
+            rand_letters = "".join(
+                SystemRandom().choices(string.ascii_letters + string.digits, k=5)
+            )
+            self.slug = slugify(f"{self.title}-{rand_letters}")
         save = super().save(*args, **kwargs)
         if self.cover:
             self.resize_image(self.cover, 800)

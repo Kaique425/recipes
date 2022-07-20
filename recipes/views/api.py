@@ -18,10 +18,12 @@ def recipe_api_list(request):
         print(f"data: {request.data}")
         serializer = RecipeSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            # serializer.save()
-            return Response(
-                data=serializer.validated_data, status=status.HTTP_201_CREATED
+            serializer.save(
+                author_id=1,
+                category_id=1,
+                tags=[1, 2],
             )
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
 
 @api_view(("GET",))
