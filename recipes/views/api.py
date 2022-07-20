@@ -18,7 +18,7 @@ def recipe_api_list(request):
         print(f"data: {request.data}")
         serializer = RecipeSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save()
+            # serializer.save()
             return Response(
                 data=serializer.validated_data, status=status.HTTP_201_CREATED
             )
