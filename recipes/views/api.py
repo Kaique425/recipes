@@ -13,7 +13,7 @@ def recipe_api_list(request):
     if request.method == "GET":
         recipes = Recipe.objects.get_published()
         serializer = RecipeSerializer(instance=recipes, many=True)
-
+        return Response(serializer.data)
     elif request.method == "POST":
         print(f"data: {request.data}")
         serializer = RecipeSerializer(data=request.data)
