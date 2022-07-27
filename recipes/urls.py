@@ -18,6 +18,10 @@ urlpatterns = [
         "api/v1/detail/<int:pk>", site.RecipeDetailViewApi.as_view(), name="api-detail"
     ),
     path("api/v1/home", site.RecipeListViewHomeApi.as_view(), name="api-home"),
-    path("recipe/api/v2/list", api.recipe_api_list, name="api-recipe-list"),
-    path("recipe/api/v2/<int:pk>", api.recipe_api_detail, name="api-recipe-detail"),
+    path("recipe/api/v2/list", api.RecipeApiV2List.as_view(), name="api-recipe-list"),
+    path(
+        "recipe/api/v2/<int:pk>",
+        api.RecipeApiV2Detail.as_view(),
+        name="api-recipe-detail",
+    ),
 ]
