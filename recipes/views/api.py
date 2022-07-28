@@ -3,14 +3,19 @@ from django.shortcuts import get_object_or_404
 from recipes.serializers import RecipeSerializer
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from ..models import Recipe
 
 
-class RecipeApiV2List(APIView):
-    def get(self, request):
+class RecipeApiV2List(ListCreateAPIView):
+    queryset = Recipe.objects.get_published()
+    serializer_class = RecipeSerializer
+    pagination_class = PageNumberPagination
+    """def get(self, request):
         recipes = Recipe.objects.get_published()
         serializer = RecipeSerializer(instance=recipes, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -23,10 +28,15 @@ class RecipeApiV2List(APIView):
                 category_id=1,
                 tags=[1, 2],
             )
-            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)"""
 
 
-class RecipeApiV2Detail(APIView):
+class RecipeApiV2Detail(RetrieveUpdateDestroyAPIView):
+    queryset = Recipe.objects.get_published()
+    serializer_class = RecipeSerializer
+
+
+"""class RecipeApiV2Detail(APIView):
     def get_recipe(self, pk):
         recipe = get_object_or_404(
             Recipe.objects.get_published(),
@@ -59,7 +69,7 @@ class RecipeApiV2Detail(APIView):
         recipe.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
-
+"""
 
 """@api_view(("GET", "POST"))
 def recipe_api_list(request):
